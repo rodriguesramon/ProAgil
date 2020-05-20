@@ -1,6 +1,77 @@
-<div *ngFor="let evento of eventos">
-  {{evento.tema}}
-  <br>
-  {{evento.local}}
-  <hr>
+<div class="form-inline">
+  <div class="form-group mb-2">
+    <input type="text" class="form-control mr-2" placeholder="Buscar..."
+    [(ngModel)]="filtroLista"
+    >
+   
+  </div>
 </div>
+<h3>Filtro: {{filtroLista}}</h3>
+<table class="table table-striped">
+  <thead class="thead-light">
+    <tr>
+      <th>
+        <button class="btn btn-outline-primary" 
+        (click)="alternarImagem()">
+        <i class="{{mostrarImagem ? 'fa fa-eye-slash'  : 'fa fa-eye'}} Imagem"></i>
+        </button>
+      </th>
+      <th>#</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Qtd. Pessoas</th>
+      <th>Lote</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length">
+    <tr *ngFor="let evento of eventosFiltrados">
+      <td>
+        <img *ngIf="mostrarImagem" src="http://localhost:5000/img/{{evento.imagemURL}}" 
+         [style.width.px]="imagemLargura"
+         [style.margin.px]="imagemMargem" 
+        >
+      </td>
+      <td>{{evento.id}}</td>
+      <td>{{evento.tema}}</td>
+      <td>{{evento.local}}</td>
+      <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+      <td>{{evento.qtdPessoas}}</td>
+      <td>
+        <div *ngIf="!evento.lotes.length">
+          Não Informado
+        </div>
+        <div *ngIf="evento.lotes.length">
+          {{evento.lotes[0].nome | uppercase}}
+        </div>
+      </td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-success"
+          (click)="openModal(template)"
+          tooltip="Editar"><i class="fa fa-edit"></i></button>
+          <button class="btn btn-sm btn-danger" tooltip="Excluir"><i class="fa fa-eraser"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <td *ngIf="!eventos.length" class="text-center" colspan="7">
+      <h4>Nenhum evento encontrado!</h4>
+    </td>
+  </tfoot>
+</table>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This ...
+  </div>
+</ng-template>
+
