@@ -6,7 +6,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
-import { templateJitUrl } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
 defineLocale('pt-br', ptBrLocale);
 
 @Component({
@@ -15,6 +15,8 @@ defineLocale('pt-br', ptBrLocale);
   styleUrls: ['./eventos.component.css']
 })
 export class EventosComponent implements OnInit {
+  titulo = 'Eventos';
+  dataEvento: string;
   eventosFiltrados: Evento[];
   eventos: Evento[];
   modoSalvar = 'post';
@@ -30,8 +32,9 @@ export class EventosComponent implements OnInit {
     private eventoService: EventoService,
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
-    private localeService: BsLocaleService
-) { 
+    private localeService: BsLocaleService,
+    private toastr: ToastrService
+) {
   this.localeService.use('pt-br');
 }
 
@@ -71,8 +74,9 @@ export class EventosComponent implements OnInit {
       () => {
           template.hide();
           this.getEventos();
+          this.toastr.success('Deletado com sucesso!');
         }, error => {
-          console.log(error);
+          this.toastr.error(`Ocorreu um erro - ${error}`);
         }
     );
   }
@@ -104,8 +108,9 @@ export class EventosComponent implements OnInit {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
+            this.toastr.success('Inserido com sucesso!');
           }, error => {
-            console.log(error);
+            this.toastr.error(`Erro ao inserir - ${error}`);
           }
         );
       }else{
@@ -115,8 +120,9 @@ export class EventosComponent implements OnInit {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
+            this.toastr.success('Editado com sucesso!');
           }, error => {
-            console.log(error);
+            this.toastr.error(`Erro ao salvar edição - ${error}`);
           }
         );
       }
