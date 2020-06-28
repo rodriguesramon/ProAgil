@@ -34,7 +34,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Bando de Dados Falhou {exception.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de Dados Falhou {exception.Message}");
             }
         }
 
@@ -74,7 +74,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception exception)
             {
-                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Bando de Dados Falhou {exception.Message}");
+                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de Dados Falhou {exception.Message}");
             }
         }
 
@@ -132,7 +132,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Bando de Dados Falhou {exception.Message} ");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de Dados Falhou {exception.Message} ");
             }
             return BadRequest();
         }
@@ -155,7 +155,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Bando de Dados Falhou");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de Dados Falhou");
             }
             return BadRequest();
         }
