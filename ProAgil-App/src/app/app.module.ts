@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppRoutingModule } from './app-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 
@@ -23,6 +23,11 @@ import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent } from './_shared/titulo/titulo.component';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
+import { UserComponent } from './user/user.component';
+
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
    declarations: [
@@ -33,7 +38,10 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
       DashboardComponent,
       ContatosComponent,
       TituloComponent,
-      DateTimeFormatPipePipe
+      DateTimeFormatPipePipe,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
    ],
    imports: [
       BrowserAnimationsModule,
@@ -49,7 +57,12 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
       ToastrModule.forRoot()
    ],
    providers: [
-      EventoService
+      EventoService,
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass : AuthInterceptor,
+         multi: true
+      }
    ],
    bootstrap: [
       AppComponent

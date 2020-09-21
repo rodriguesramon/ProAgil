@@ -5,7 +5,7 @@ import { RedeSocial } from './RedeSocial';
 export interface Evento {
     id: number;
     local: string;
-    dataEvento: Date;
+    dataEvento: Date    ;
     tema: string;
     qtdPessoas: number;
     lotes: Lote[];

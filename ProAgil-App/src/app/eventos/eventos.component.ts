@@ -106,14 +106,14 @@ export class EventosComponent implements OnInit {
 
   onFileChange(event){
     const reader = new FileReader();
-    if(event.target.files && event.target.files.length){
+    if (event.target.files && event.target.files.length){
       this.file = event.target.files;
       console.log(this.file);
     }
   }
 
   uploadImage(){
-    if(this.modoSalvar === "post"){
+    if (this.modoSalvar === 'post'){
       const nomeArquivo = this.evento.imagemURL.split('\\', 3);
       this.evento.imagemURL = nomeArquivo[2];
       this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe(
@@ -134,13 +134,13 @@ export class EventosComponent implements OnInit {
   }
 
   salvarAlteracao(template: any){
-    if(this.registerForm.valid){
-      if(this.modoSalvar === "post"){
+    if (this.registerForm.valid){
+      if (this.modoSalvar === 'post'){
         this.evento = Object.assign({}, this.registerForm.value);
         this.uploadImage();
 
         this.eventoService.postEvento(this.evento).subscribe(
-          (novoEvento: Evento) =>{
+          (novoEvento: Evento) => {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
@@ -153,7 +153,7 @@ export class EventosComponent implements OnInit {
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
         this.uploadImage();
         this.eventoService.putEvento(this.evento).subscribe(
-          (novoEvento: Evento) =>{
+          (novoEvento: Evento) => {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
@@ -168,24 +168,26 @@ export class EventosComponent implements OnInit {
 
   validation(){
     this.registerForm = this.formBuilder.group({
-      tema: ['', [Validators.required, Validators.minLength(5),Validators.maxLength(50)]],
+      tema: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       local: ['', Validators.required],
       dataEvento: ['', Validators.required],
-      qtdPessoas: ['', [Validators.required,Validators.max(10)]],
+      qtdPessoas: ['', [Validators.required, Validators.max(10)]],
       imagemURL: ['', Validators.required],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
-  getEventos(){
+  getEventos() {
+    this.dataAtual = new Date().getMilliseconds().toString();
+
     this.eventoService.getAllEvento().subscribe(
+      // tslint:disable-next-line: variable-name
       (_eventos: Evento[]) => {
-      this.eventos = _eventos;
-      this.eventosFiltrados = this.eventos;
-      console.log(_eventos);
+        this.eventos = _eventos;
+        this.eventosFiltrados = this.eventos;
+        console.log(this.eventos);
       }, error => {
-        console.log(error);
+        this.toastr.error(`Erro ao tentar Carregar eventos: ${error}`);
       });
   }
-
 }

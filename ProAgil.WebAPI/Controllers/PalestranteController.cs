@@ -43,7 +43,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try{
                 _repository.Add(model);
-                if(await _repository.SaveChangesAsync())
+                if (await _repository.SaveChangesAsync())
                 {
                     return Created($"/api/palestrante/{model.Id}",model);
                 }                  
@@ -58,11 +58,11 @@ namespace ProAgil.WebAPI.Controllers
         {
             try{
                 var palestrante = await _repository.GetEventoAsyncById(palestranteId, false);
-                if(palestrante == null){
+                if (palestrante == null){
                     return NotFound();
                 }
                 _repository.Update(model);
-                if(await _repository.SaveChangesAsync())
+                if (await _repository.SaveChangesAsync())
                 {
                     return Created($"/api/palestrante/{model.Id}",model);
                 }                  
@@ -77,11 +77,11 @@ namespace ProAgil.WebAPI.Controllers
         {
             try{
                 var palestrante = await _repository.GetEventoAsyncById(palestranteId, false);
-                if(palestrante == null){
+                if (palestrante == null){
                     return NotFound();
                 }
                 _repository.Delete(palestrante);
-                if(await _repository.SaveChangesAsync())
+                if (await _repository.SaveChangesAsync())
                 {
                     return Ok();
                 }                  
