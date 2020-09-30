@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -112,17 +113,34 @@ namespace ProAgil.WebAPI.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{eventoId}")]
-        public async Task<IActionResult> Put(int eventoId, EventoDto model)
+        [HttpPut("{EventoId}")]
+        public async Task<IActionResult> Put(int EventoId, EventoDto model)
         {
             try
             {
-                var evento = await _repository.GetEventoAsyncById(eventoId, false);
-                if (evento == null)
-                {
-                    return NotFound();
-                }
+                var evento = await _repository.GetEventoAsyncById(EventoId, false);
+                if (evento == null) return NotFound();
+
+                var idLotes = new List<int>();
+                var idRedesSociais = new List<int>();
+
+                if(model.Lotes != null) model.Lotes.ForEach(item => idLotes.Add(item.Id));
+
+                if(model.RedesSociais != null) model.RedesSociais.ForEach(item => idRedesSociais.Add(item.Id));
+
+                var lotes = evento.Lotes.Where(
+                    lote => !idLotes.Contains(lote.Id)
+                ).ToArray();
+
+                var redesSociais = evento.RedesSociais.Where(
+                    rede => !idLotes.Contains(rede.Id)
+                ).ToArray();
+
+                if (lotes.Length > 0) _repository.DeleteRange(lotes);
+                if (redesSociais.Length > 0) _repository.DeleteRange(redesSociais);
+
                 _mapper.Map(model, evento);
+
                 _repository.Update(evento);
 
                 if (await _repository.SaveChangesAsync())
@@ -130,10 +148,11 @@ namespace ProAgil.WebAPI.Controllers
                     return Created($"/api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));
                 }
             }
-            catch (System.Exception exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de Dados Falhou {exception.Message} ");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco Dados Falhou " + ex.Message);
             }
+
             return BadRequest();
         }
 

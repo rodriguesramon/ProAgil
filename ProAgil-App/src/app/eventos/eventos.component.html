@@ -29,13 +29,13 @@
       <th>Data</th>
       <th>Qtd. Pessoas</th>
       <th>Lote</th>
-      <th>Opções</th>
+      <th colspan="2">Opções</th>
     </tr>
   </thead>
   <tbody *ngIf="eventos && eventos.length">
     <tr *ngFor="let evento of eventosFiltrados">
       <td>
-        <img *ngIf="mostrarImagem" src="http://localhost:5000/resources/images/{{evento.imagemURL}}?_ts={{dataAtual}}" 
+        <img *ngIf="mostrarImagem" src="http://localhost:5000/resources/images/{{evento.imagemURL}}?_ts={{dataAtual}}"
          [style.width.px]="imagemLargura"
          [style.margin.px]="imagemMargem" 
         >
@@ -57,11 +57,17 @@
         <div class="btn-group">
           <button class="btn btn-sm btn-success"
           (click)="editarEvento(evento, template)"
-          tooltip="Editar"><i class="fa fa-edit"></i></button>
+          tooltip="Editar"><i class="fa fa-edit"></i>
+          </button>
           <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirEvento(evento, confirm)">
             <i class="fa fa-eraser"></i>
           </button>
         </div>
+      </td>
+      <td>
+        <a [routerLink]="['/evento', evento.id, 'edit']" tooltip="Edição Detalhada" class="btn btn-sm btn-warning">
+          <i class="fa fa-eraser"></i>
+        </a>
       </td>
     </tr>
   </tbody>

@@ -135,5 +135,10 @@ namespace ProAgil.Repository
             return await query.ToArrayAsync();
         }
 
+        public void DeleteRange<T>(T[] entityArray) where T : class
+        {
+            _context.RemoveRange(entityArray);
+        }
+
     }
 }

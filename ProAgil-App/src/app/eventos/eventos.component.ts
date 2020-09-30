@@ -19,8 +19,8 @@ export class EventosComponent implements OnInit {
   dataEvento: string;
   eventosFiltrados: Evento[];
   eventos: Evento[];
-  modoSalvar = 'post';
   evento: Evento;
+  modoSalvar = 'post';
   imagemLargura = 50;
   imagemMargem = 2;
   mostrarImagem = false;
@@ -91,7 +91,6 @@ export class EventosComponent implements OnInit {
     template.show();
   }
 
-
   ngOnInit() {
     this.validation();
     this.getEventos();
@@ -108,28 +107,30 @@ export class EventosComponent implements OnInit {
     const reader = new FileReader();
     if (event.target.files && event.target.files.length){
       this.file = event.target.files;
-      console.log(this.file);
     }
   }
 
-  uploadImage(){
-    if (this.modoSalvar === 'post'){
+  uploadImagem() {
+    if (this.modoSalvar === 'post') {
       const nomeArquivo = this.evento.imagemURL.split('\\', 3);
       this.evento.imagemURL = nomeArquivo[2];
-      this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe(
-        () => {
-          this.dataAtual = new Date().getMilliseconds().toString();
-          this.getEventos();
-        }
-      );
-    }else{
+
+      this.eventoService.postUpload(this.file, nomeArquivo[2])
+        .subscribe(
+          () => {
+            this.dataAtual = new Date().getMilliseconds().toString();
+            this.getEventos();
+          }
+        );
+    } else {
       this.evento.imagemURL = this.fileNameToUpdate;
-      this.eventoService.postUpload(this.file, this.fileNameToUpdate).subscribe(
-        () => {
-          this.dataAtual = new Date().getMilliseconds().toString();
-          this.getEventos();
-        }
-      );
+      this.eventoService.postUpload(this.file, this.fileNameToUpdate)
+        .subscribe(
+          () => {
+            this.dataAtual = new Date().getMilliseconds().toString();
+            this.getEventos();
+          }
+        );
     }
   }
 
@@ -137,11 +138,10 @@ export class EventosComponent implements OnInit {
     if (this.registerForm.valid){
       if (this.modoSalvar === 'post'){
         this.evento = Object.assign({}, this.registerForm.value);
-        this.uploadImage();
+        this.uploadImagem();
 
         this.eventoService.postEvento(this.evento).subscribe(
           (novoEvento: Evento) => {
-            console.log(novoEvento);
             template.hide();
             this.getEventos();
             this.toastr.success('Inserido com sucesso!');
@@ -149,17 +149,18 @@ export class EventosComponent implements OnInit {
             this.toastr.error(`Erro ao inserir - ${error}`);
           }
         );
-      }else{
-        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
-        this.uploadImage();
+      }else {
+        this.evento = Object.assign({ id: this.evento.id }, this.registerForm.value);
+
+        this.uploadImagem();
+
         this.eventoService.putEvento(this.evento).subscribe(
-          (novoEvento: Evento) => {
-            console.log(novoEvento);
+          () => {
             template.hide();
             this.getEventos();
-            this.toastr.success('Editado com sucesso!');
+            this.toastr.success('Editado com Sucesso!');
           }, error => {
-            this.toastr.error(`Erro ao salvar edição - ${error}`);
+            this.toastr.error(`Erro ao Editar: ${error}`);
           }
         );
       }
@@ -172,11 +173,12 @@ export class EventosComponent implements OnInit {
       local: ['', Validators.required],
       dataEvento: ['', Validators.required],
       qtdPessoas: ['', [Validators.required, Validators.max(10)]],
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
+  
   getEventos() {
     this.dataAtual = new Date().getMilliseconds().toString();
 
@@ -185,7 +187,6 @@ export class EventosComponent implements OnInit {
       (_eventos: Evento[]) => {
         this.eventos = _eventos;
         this.eventosFiltrados = this.eventos;
-        console.log(this.eventos);
       }, error => {
         this.toastr.error(`Erro ao tentar Carregar eventos: ${error}`);
       });
