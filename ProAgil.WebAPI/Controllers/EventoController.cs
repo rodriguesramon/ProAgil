@@ -40,18 +40,20 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> upload()
+        public IActionResult upload()
         {
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources","Images");
+                var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-                if (file.Length > 0){
+                if (file.Length > 0)
+                {
                     var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
                     var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim());
-                    using(var stream = new FileStream(fullPath, FileMode.Create)){
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
                         file.CopyTo(stream);
                     }
                 }
@@ -61,7 +63,6 @@ namespace ProAgil.WebAPI.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Bando de Dados Falhou {exception.Message}");
             }
-            return BadRequest("Erro ao realizar o upload");
         }
 
         [HttpGet("{EventoId}")]

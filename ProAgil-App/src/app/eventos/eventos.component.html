@@ -6,7 +6,7 @@
     </div>
   </div>
   <div>
-    <button class="btn btn-outline-primary" (click)="novoEvento(template)">
+    <button class="btn btn-primary" (click)="novoEvento(template)">
       <i class="fa fa-plus-circle"></i>
       Novo Evento
     </button>
@@ -18,7 +18,7 @@
   <thead class="thead-light">
     <tr>
       <th>
-        <button class="btn btn-outline-primary" 
+        <button class="btn btn-primary" 
         (click)="alternarImagem()">
         <i class="{{mostrarImagem ? 'fa fa-eye-slash'  : 'fa fa-eye'}} Imagem"></i>
         </button>
@@ -213,10 +213,10 @@
       			<p>{{bodyDeletarEvento}}</p>
     		</div>    
     		<div class="modal-footer btn-group d-flex">      
-      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+      			<button type="button" class="btn btn-primary" (click)="confirm.hide()">
         			CENCELAR
       			</button>
-      			<button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
+      			<button type="button" class="btn btn-danger" (click)="confirmeDelete(confirm)">
           			DELETAR
         		</button>
     		</div>
